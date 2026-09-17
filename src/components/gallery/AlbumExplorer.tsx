@@ -104,10 +104,10 @@ export default function AlbumExplorer({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Breadcrumb Bar */}
-      <nav className="flex items-center flex-wrap gap-2 text-xs text-black/60 bg-white px-4 py-2.5 rounded-full border border-black/5 shadow-2xs">
+      <nav className="flex items-center flex-wrap gap-2 text-xs text-black/70 bg-white px-4 py-2.5 rounded-[8px] border border-black/10 shadow-2xs">
         <button
           onClick={() => navigateToFolder(album.driveFolderId, album.title, 0)}
-          className={`flex items-center gap-1.5 transition-colors cursor-pointer ${
+          className={`flex items-center gap-1.5 transition-colors cursor-pointer rounded-[4px] px-1 py-0.5 focus-visible:ring-2 focus-visible:ring-[#00543D] focus:outline-hidden ${
             breadcrumbs.length === 1 ? "font-semibold text-[#00543D]" : "hover:text-black"
           }`}
         >
@@ -121,10 +121,10 @@ export default function AlbumExplorer({
 
           return (
             <div key={crumb.id} className="flex items-center gap-2">
-              <ChevronRight className="w-3 h-3 text-black/20" />
+              <ChevronRight className="w-3 h-3 text-black/30" />
               <button
                 onClick={() => navigateToFolder(crumb.id, crumb.name, actualIndex)}
-                className={`flex items-center gap-1 transition-colors cursor-pointer ${
+                className={`flex items-center gap-1 transition-colors cursor-pointer rounded-[4px] px-1 py-0.5 focus-visible:ring-2 focus-visible:ring-[#00543D] focus:outline-hidden ${
                   isCurrent ? "font-semibold text-[#00543D]" : "hover:text-black"
                 }`}
               >
@@ -136,7 +136,7 @@ export default function AlbumExplorer({
         })}
 
         {loading && (
-          <div className="ml-auto flex items-center gap-1.5 text-[11px] text-[#00543D] font-mono animate-pulse">
+          <div className="ml-auto flex items-center gap-1.5 text-xs text-[#00543D] font-medium animate-pulse">
             <Loader2 className="w-3 h-3 animate-spin" />
             <span>Memuat folder...</span>
           </div>

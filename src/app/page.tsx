@@ -3,7 +3,7 @@ import { localDb, db, isDbConfigured } from "@/db";
 import { albums, Album } from "@/db/schema";
 import AlbumCard from "@/components/gallery/AlbumCard";
 import FeaturedHeroAlbum from "@/components/gallery/FeaturedHeroAlbum";
-import { Sparkles, Camera } from "lucide-react";
+import { BookOpen, Camera } from "lucide-react";
 
 export const revalidate = 0; // Dynamic data for instant updates
 
@@ -40,16 +40,16 @@ export default async function HomePage() {
       
       {/* Editorial Intro Header */}
       <section className="pt-4 sm:pt-10 text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-black/5 text-xs text-black/60 shadow-2xs font-mono">
-          <Sparkles className="w-3.5 h-3.5 text-[#00543D]" />
-          <span>Arsip Kenangan Keluarga • Google Drive Powered</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-[6px] bg-white border border-black/8 text-xs text-black/75 shadow-2xs font-medium">
+          <BookOpen className="w-3.5 h-3.5 text-[#00543D]" />
+          <span>Arsip Kenangan Keluarga • Tersimpan di Google Drive</span>
         </div>
 
         <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#0A0B0C] leading-[1.12] font-editorial">
           Setiap senyum, langkah kecil, dan momen indah tersimpan abadi.
         </h1>
 
-        <p className="text-sm sm:text-base text-black/60 max-w-xl mx-auto leading-relaxed">
+        <p className="text-sm sm:text-base text-black/75 max-w-xl mx-auto leading-relaxed">
           Galeri foto & video keluarga yang terkurasi langsung dari Google Drive dengan kehangatan estetika editorial.
         </p>
       </section>
@@ -57,8 +57,8 @@ export default async function HomePage() {
       {/* Hero Spotlight: Featured Magazine Cover Album */}
       {featuredAlbum ? (
         <section className="space-y-4">
-          <div className="flex items-center justify-between text-xs font-mono text-black/40 px-1">
-            <span className="uppercase tracking-widest text-[11px] font-semibold text-[#00543D] flex items-center gap-1.5">
+          <div className="flex items-center justify-between text-xs font-medium text-black/60 px-1">
+            <span className="uppercase tracking-wider text-[11px] font-semibold text-[#00543D] flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#00543D] animate-pulse" />
               Sorotan Utama Terbaru
             </span>
@@ -72,12 +72,12 @@ export default async function HomePage() {
             <Camera className="w-6 h-6" />
           </div>
           <h3 className="text-lg font-bold text-[#0A0B0C]">Belum ada album publik</h3>
-          <p className="text-xs text-black/50 max-w-sm mx-auto">
+          <p className="text-xs text-black/60 max-w-sm mx-auto">
             Masuk ke panel admin untuk menghubungkan folder Google Drive pertama Anda.
           </p>
           <Link
             href="/admin/login"
-            className="inline-block px-6 py-2.5 rounded-full bg-[#00543D] text-white text-xs font-medium hover:bg-[#003e2c] transition-all shadow-xs"
+            className="inline-block px-6 py-2.5 rounded-[8px] bg-[#00543D] text-white text-xs font-medium hover:bg-[#003e2c] transition-all shadow-xs focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden"
           >
             Masuk ke Admin Portal
           </Link>
@@ -87,14 +87,14 @@ export default async function HomePage() {
       {/* Other Curated Collections Section */}
       {secondaryAlbums.length > 0 && (
         <section id="gallery" className="space-y-10 pt-6">
-          <div className="flex items-end justify-between border-b border-black/5 pb-4">
+          <div className="flex items-end justify-between border-b border-black/8 pb-4">
             <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-black/40">Koleksi Lainnya</span>
+              <span className="text-xs uppercase tracking-wider text-black/60 font-medium">Koleksi Lainnya</span>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0A0B0C] mt-1 font-editorial">
                 Jelajahi Arsip Kenangan
               </h2>
             </div>
-            <span className="text-xs text-black/40 font-mono">
+            <span className="text-xs text-black/60 font-medium">
               {secondaryAlbums.length} Koleksi
             </span>
           </div>

@@ -57,18 +57,18 @@ export default function Navbar() {
           </div>
           <div className="flex flex-col">
             <span className="font-semibold text-sm tracking-tight text-[#0A0B0C]">DriveAlbum</span>
-            <span className="text-[10px] text-black/40 uppercase tracking-widest font-mono">Editorial</span>
+            <span className="text-[10px] text-black/60 uppercase tracking-wider font-medium">Editorial</span>
           </div>
         </Link>
 
         <div className="flex items-center gap-2">
           <Link
             href="/"
-            className={`px-4 py-1.5 text-xs font-medium rounded-full transition-colors ${
-              pathname === "/" ? "bg-[#0A0B0C] text-white" : "text-black/70 hover:text-black hover:bg-black/5"
+            className={`px-4 py-1.5 text-xs font-medium rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden ${
+              pathname === "/" ? "bg-[#0A0B0C] text-white" : "text-black/80 hover:text-black hover:bg-black/5"
             }`}
           >
-            Explore
+            Galeri
           </Link>
 
           {hasSession ? (
@@ -76,8 +76,8 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setShowDropdown(!showDropdown)}
-                className={`flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-full transition-colors cursor-pointer ${
-                  isAdminPath ? "bg-[#00543D] text-white" : "text-black/70 hover:text-black hover:bg-black/5"
+                className={`flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-full transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden ${
+                  isAdminPath ? "bg-[#00543D] text-white" : "text-black/80 hover:text-black hover:bg-black/5"
                 }`}
               >
                 <Shield className="w-3 h-3" />
@@ -89,7 +89,7 @@ export default function Navbar() {
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-[12px] border border-black/10 shadow-xl py-1.5 z-50 animate-fade-in text-xs">
                   <div className="px-3.5 py-2 border-b border-black/5">
                     <p className="font-semibold text-black">Administrator</p>
-                    <p className="text-[10px] text-black/40 font-mono truncate">admin@drivealbum.local</p>
+                    <p className="text-[10px] text-black/60 truncate">admin@drivealbum.local</p>
                   </div>
 
                   <Link

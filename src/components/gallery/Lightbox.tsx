@@ -120,14 +120,14 @@ export default function Lightbox({ media, initialIndex, onClose }: LightboxProps
       <div className="flex items-center justify-between w-full max-w-5xl mx-auto z-20 pt-1 sm:pt-0">
         {/* Left: Counter & Media Badge */}
         <div className="flex items-center gap-2 sm:gap-3">
-          <span className="text-xs font-mono tracking-wider text-white/70 bg-white/10 px-2.5 py-1 rounded-full border border-white/5 shadow-xs">
+          <span className="text-xs font-medium tracking-wider text-white/90 bg-white/15 px-2.5 py-1 rounded-[4px] border border-white/10 shadow-xs">
             {currentIndex + 1} / {media.length}
           </span>
-          <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 text-[10px] uppercase font-mono tracking-wider text-white/60">
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-[4px] bg-white/15 text-[10px] uppercase font-medium tracking-wider text-white/80">
             {isVideo ? <Video className="w-3 h-3 text-[#FFBBFC]" /> : <ImageIcon className="w-3 h-3 text-[#ABCBF9]" />}
             <span>{isVideo ? "Video" : "Foto"}</span>
           </div>
-          <span className="hidden sm:inline-block text-xs text-white/60 truncate max-w-[200px] md:max-w-md font-mono">
+          <span className="hidden sm:inline-block text-xs text-white/75 truncate max-w-[200px] md:max-w-md">
             {currentItem.name}
           </span>
         </div>
@@ -270,7 +270,7 @@ export default function Lightbox({ media, initialIndex, onClose }: LightboxProps
           </button>
         )}
 
-        <div className="text-center font-mono text-[10px] sm:text-[11px] tracking-wide">
+        <div className="text-center font-medium text-white/75 text-xs tracking-wide">
           <span className="hidden sm:inline">Gunakan tombol panah keyboard • Esc untuk menutup</span>
           <span className="sm:hidden">Geser kiri / kanan • Tarik ke bawah untuk menutup</span>
         </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Album } from "@/db/schema";
-import { ArrowRight, Calendar, Sparkles, Folder, Lock } from "lucide-react";
+import { ArrowRight, Calendar, Bookmark, Folder, Lock } from "lucide-react";
 
 interface FeaturedHeroAlbumProps {
   album: Album;
@@ -38,7 +38,7 @@ export default function FeaturedHeroAlbum({ album }: FeaturedHeroAlbumProps) {
           <div className="md:col-span-7 relative">
             <Link
               href={`/album/${album.slug}`}
-              className="block relative aspect-[4/3] sm:aspect-[16/11] w-full rounded-[12px] overflow-hidden bg-black/5 shadow-inner cursor-pointer"
+              className="block relative aspect-[4/3] sm:aspect-[16/11] w-full rounded-[12px] overflow-hidden bg-black/5 shadow-inner cursor-pointer focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden"
             >
               {displayCoverUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -48,21 +48,21 @@ export default function FeaturedHeroAlbum({ album }: FeaturedHeroAlbumProps) {
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-black/20 space-y-2">
+                <div className="w-full h-full flex flex-col items-center justify-center text-black/30 space-y-2">
                   <Folder className="w-16 h-16" />
-                  <span className="text-xs font-mono">Belum ada foto cover</span>
+                  <span className="text-xs">Belum ada foto cover</span>
                 </div>
               )}
 
-              {/* Spotlight Floating Badge */}
-              <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-black/5 text-[#00543D] text-[11px] font-medium shadow-xs">
-                <Sparkles className="w-3.5 h-3.5 fill-current" />
+              {/* Spotlight Floating Badge (Tactile Paper Badge, No Excessive Glassmorphism) */}
+              <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] bg-white border border-black/10 text-[#00543D] text-[11px] font-semibold shadow-xs">
+                <Bookmark className="w-3.5 h-3.5 fill-current" />
                 <span>Sorotan Utama</span>
               </div>
 
               {/* Private Lock Indicator */}
               {isLocked && (
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-white text-[11px] font-mono shadow-xs">
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] bg-[#0A0B0C] border border-white/10 text-white text-[11px] shadow-xs">
                   <Lock className="w-3.5 h-3.5 text-amber-300" />
                   <span>PIN Terproteksi</span>
                 </div>
@@ -76,43 +76,46 @@ export default function FeaturedHeroAlbum({ album }: FeaturedHeroAlbumProps) {
           {/* Right Column: Editorial Narrative & CTA */}
           <div className="md:col-span-5 space-y-6">
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-xs font-mono text-black/40">
-                <span className="flex items-center gap-1">
+              <div className="flex items-center gap-2 text-xs font-medium text-black/65">
+                <span className="flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5 text-[#00543D]" />
                   {formattedDate}
                 </span>
                 <span>•</span>
-                <span className="uppercase tracking-widest text-[10px] bg-black/5 px-2 py-0.5 rounded-full text-black/60">
+                <span className="uppercase tracking-wider text-[10px] bg-black/5 px-2.5 py-0.5 rounded-[4px] text-black/75 font-semibold">
                   {album.visibility === "public" ? "Koleksi Terbuka" : "Privat"}
                 </span>
               </div>
 
               <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#0A0B0C] leading-tight font-editorial group-hover:text-[#00543D] transition-colors">
-                <Link href={`/album/${album.slug}`}>
+                <Link
+                  href={`/album/${album.slug}`}
+                  className="focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden rounded-[4px]"
+                >
                   {album.title}
                 </Link>
               </h2>
 
               {album.description && (
-                <p className="text-sm sm:text-base text-black/70 leading-relaxed line-clamp-3">
+                <p className="text-sm sm:text-base text-black/75 leading-relaxed line-clamp-3">
                   {album.description}
                 </p>
               )}
 
               {album.story && (
-                <div className="pt-2 border-l-2 border-[#00543D]/30 pl-3">
-                  <p className="text-xs text-black/50 italic leading-relaxed line-clamp-2">
+                <div className="pt-2 border-l-2 border-[#00543D]/40 pl-3">
+                  <p className="text-xs text-black/65 italic leading-relaxed line-clamp-2">
                     &ldquo;{album.story}&rdquo;
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons (Structured Editorial Button) */}
             <div className="pt-2">
               <Link
                 href={`/album/${album.slug}`}
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#00543D] hover:bg-[#003e2c] text-white font-medium text-xs sm:text-sm transition-all shadow-xs hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-[8px] bg-[#00543D] hover:bg-[#003e2c] text-white font-medium text-xs sm:text-sm transition-all shadow-xs hover:scale-[1.01] active:scale-[0.99] cursor-pointer focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden"
               >
                 <span>Buka Album Ini</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

@@ -11,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DriveAlbum — Editorial Photo Gallery",
-  description: "A daylight editorial gallery powered by Google Drive with zero duplicate storage.",
+  title: "DriveAlbum: Galeri Foto & Video Kenangan Keluarga",
+  description: "Arsip kenangan foto dan video keluarga berestetika editorial langsung dari Google Drive.",
 };
 
 export default function RootLayout({

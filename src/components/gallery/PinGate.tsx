@@ -44,14 +44,14 @@ export default function PinGate({ albumTitle, onUnlock }: PinGateProps) {
         </div>
 
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/5 text-[11px] font-mono text-black/60 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[4px] bg-[#00543D]/10 text-xs font-semibold text-[#00543D] uppercase tracking-wider">
             <ShieldCheck className="w-3.5 h-3.5 text-[#00543D]" />
             <span>Album Terproteksi</span>
           </div>
           <h2 className="text-2xl font-bold tracking-tight text-[#0A0B0C]">
             {albumTitle}
           </h2>
-          <p className="text-xs text-black/50 leading-relaxed max-w-xs mx-auto">
+          <p className="text-xs text-black/70 leading-relaxed max-w-xs mx-auto">
             Album ini bersifat privat untuk keluarga. Silakan masukkan PIN akses untuk melihat foto & video.
           </p>
         </div>
@@ -81,7 +81,7 @@ export default function PinGate({ albumTitle, onUnlock }: PinGateProps) {
           <button
             type="submit"
             disabled={loading || pin.length < 3}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-[#00543D] hover:bg-[#003e2c] text-white font-medium text-xs transition-all shadow-xs disabled:opacity-50 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-[8px] bg-[#00543D] hover:bg-[#003e2c] text-white font-medium text-xs transition-all shadow-xs disabled:opacity-50 cursor-pointer hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:ring-offset-2 focus:outline-hidden"
           >
             <span>{loading ? "Memverifikasi..." : "Buka Album"}</span>
             <ArrowRight className="w-4 h-4" />

@@ -49,7 +49,7 @@ export default async function AlbumDetailPage({ params }: PageProps) {
       <div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-medium text-black/50 hover:text-black transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-medium text-black/70 hover:text-black transition-colors rounded-[4px] px-1 py-0.5 focus-visible:ring-2 focus-visible:ring-[#00543D] focus:outline-hidden"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           Kembali ke semua album
@@ -58,13 +58,13 @@ export default async function AlbumDetailPage({ params }: PageProps) {
 
       {/* Album Header */}
       <header className="max-w-3xl space-y-4">
-        <div className="flex items-center flex-wrap gap-4 text-xs font-mono text-black/40">
+        <div className="flex items-center flex-wrap gap-4 text-xs text-black/70 font-medium">
           <span className="flex items-center gap-1.5">
             <Calendar className="w-3.5 h-3.5" />
             {formattedDate}
           </span>
           {isLocked ? (
-            <span className="flex items-center gap-1 text-[#00543D] font-medium bg-[#00543D]/10 px-2.5 py-0.5 rounded-full">
+            <span className="flex items-center gap-1 text-[#00543D] font-medium bg-[#00543D]/10 px-2.5 py-0.5 rounded-[4px]">
               Privat (PIN Terproteksi)
             </span>
           ) : (

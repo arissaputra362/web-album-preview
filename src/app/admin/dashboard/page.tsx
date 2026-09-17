@@ -275,11 +275,11 @@ export default function AdminDashboardPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-black/5 pb-6">
         <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-black/40">Admin Portal</span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-black/70">Admin Portal</span>
           <h1 className="text-3xl font-bold tracking-tight text-[#0A0B0C] mt-1">
             Manajemen Album & Google Drive
           </h1>
-          <p className="text-xs text-black/50 mt-1">
+          <p className="text-xs text-black/70 mt-1">
             Service Account aktif:{" "}
             <code className="bg-black/5 px-2 py-0.5 rounded text-[11px] text-[#00543D] font-mono">
               drivealbum-bot@potent-retina-464605-h2.iam.gserviceaccount.com
@@ -290,7 +290,7 @@ export default function AdminDashboardPage() {
         <div className="flex items-center gap-3 self-start">
           <button
             onClick={handleOpenCreate}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#00543D] text-white text-xs font-medium hover:bg-[#003e2c] transition-all shadow-xs cursor-pointer relative z-20 shrink-0 hover:scale-105 active:scale-95"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[8px] bg-[#00543D] text-white text-xs font-medium hover:bg-[#003e2c] transition-all shadow-xs cursor-pointer relative z-20 shrink-0 active:scale-98 focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden"
           >
             <Plus className="w-4 h-4" />
             Tambah Album Baru
@@ -301,7 +301,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => setShowAdminMenu(!showAdminMenu)}
-              className="inline-flex items-center gap-2 px-4 py-3 rounded-full bg-white border border-black/10 hover:bg-black/5 text-black/80 text-xs font-medium transition-all cursor-pointer shadow-xs select-none"
+              className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-[8px] bg-white border border-black/10 hover:bg-black/5 text-black/80 text-xs font-medium transition-all cursor-pointer shadow-xs select-none focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden"
               aria-expanded={showAdminMenu}
             >
               <div className="w-5 h-5 rounded-full bg-[#00543D] text-white flex items-center justify-center font-bold text-[10px]">
@@ -309,7 +309,7 @@ export default function AdminDashboardPage() {
               </div>
               <span className="font-medium">Admin</span>
               <ChevronDown
-                className={`w-3.5 h-3.5 text-black/40 transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 text-black/60 transition-transform duration-200 ${
                   showAdminMenu ? "rotate-180" : ""
                 }`}
               />
@@ -320,7 +320,7 @@ export default function AdminDashboardPage() {
               <div className="absolute right-0 mt-2 w-56 bg-white rounded-[12px] border border-black/10 shadow-xl py-2 z-50 animate-fade-in text-xs">
                 <div className="px-4 py-2.5 border-b border-black/5">
                   <p className="font-semibold text-[#0A0B0C]">Administrator</p>
-                  <p className="text-[11px] text-black/40 truncate font-mono">admin@drivealbum.local</p>
+                  <p className="text-[11px] text-black/60 truncate">admin@drivealbum.local</p>
                 </div>
 
                 <div className="py-1">
@@ -373,7 +373,7 @@ export default function AdminDashboardPage() {
       <div className="bg-white rounded-[8px] border border-black/5 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#F9F9F9] border-b border-black/5 font-mono text-[11px] uppercase tracking-wider text-black/40">
+            <thead className="bg-[#F9F9F9] border-b border-black/8 font-medium text-[11px] uppercase tracking-wider text-black/65">
               <tr>
                 <th className="py-3.5 px-6">Album</th>
                 <th className="py-3.5 px-6">Drive Folder ID</th>
@@ -409,7 +409,7 @@ export default function AdminDashboardPage() {
                         </div>
                         <div>
                           <p className="font-semibold text-sm text-[#0A0B0C]">{album.title}</p>
-                          <p className="text-[11px] text-black/40 font-mono">/{album.slug}</p>
+                          <p className="text-[11px] text-black/65 font-mono">/{album.slug}</p>
                         </div>
                       </div>
                     </td>
@@ -444,7 +444,7 @@ export default function AdminDashboardPage() {
                               PIN: {(album as any).pin}
                             </span>
                           ) : (
-                            <span className="text-[10px] text-black/40 font-mono pl-1">
+                            <span className="text-[11px] text-black/65 pl-1">
                               Tanpa PIN
                             </span>
                           )
@@ -616,14 +616,14 @@ export default function AdminDashboardPage() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 rounded-full hover:bg-black/5 text-black/70 transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-[6px] hover:bg-black/5 text-black/70 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2 rounded-full bg-[#00543D] text-white font-medium hover:bg-[#003e2c] transition-all disabled:opacity-50 cursor-pointer"
+                  className="px-6 py-2 rounded-[6px] bg-[#00543D] text-white font-medium hover:bg-[#003e2c] transition-all disabled:opacity-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden"
                 >
                   {isSubmitting
                     ? "Menyimpan..."
@@ -732,14 +732,14 @@ export default function AdminDashboardPage() {
                 <button
                   type="button"
                   onClick={() => setShowPasswordModal(false)}
-                  className="px-4 py-2 rounded-full hover:bg-black/5 text-black/70 transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-[6px] hover:bg-black/5 text-black/70 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={passSubmitting}
-                  className="px-6 py-2 rounded-full bg-[#00543D] text-white font-medium hover:bg-[#003e2c] transition-all disabled:opacity-50 cursor-pointer"
+                  className="px-6 py-2 rounded-[6px] bg-[#00543D] text-white font-medium hover:bg-[#003e2c] transition-all disabled:opacity-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#00543D] focus-visible:outline-hidden"
                 >
                   {passSubmitting ? "Memproses..." : "Simpan Password Baru"}
                 </button>

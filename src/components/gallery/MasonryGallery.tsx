@@ -24,18 +24,26 @@ function MediaCard({
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={onClick}
-      className="group relative cursor-pointer overflow-hidden rounded-[8px] bg-white border border-black/5 shadow-xs transition-all duration-300 hover:shadow-md break-inside-avoid"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      className="group relative cursor-pointer overflow-hidden rounded-[8px] bg-white border border-black/10 shadow-xs transition-all duration-300 hover:shadow-md break-inside-avoid focus-visible:ring-2 focus-visible:ring-[#00543D] focus:outline-hidden"
     >
       {/* Skeleton Shimmer Placeholder while loading */}
       {!isLoaded && !hasError && (
-        <div className="w-full aspect-[4/3] bg-gradient-to-tr from-black/[0.03] via-black/[0.07] to-black/[0.03] animate-pulse flex flex-col items-center justify-center p-4 text-center text-black/30 space-y-2">
+        <div className="w-full aspect-[4/3] bg-gradient-to-tr from-black/[0.03] via-black/[0.07] to-black/[0.03] animate-pulse flex flex-col items-center justify-center p-4 text-center text-black/40 space-y-2">
           {isVideo ? (
-            <Video className="w-7 h-7 text-[#00543D]/40 animate-bounce" />
+            <Video className="w-7 h-7 text-[#00543D]/60 animate-bounce" />
           ) : (
-            <Camera className="w-7 h-7 text-black/20" />
+            <Camera className="w-7 h-7 text-black/30" />
           )}
-          <span className="text-[11px] font-mono text-black/40 truncate max-w-[80%]">
+          <span className="text-xs text-black/60 truncate max-w-[80%]">
             {item.name}
           </span>
         </div>
@@ -55,16 +63,16 @@ function MediaCard({
           }`}
         />
       ) : (
-        <div className="w-full aspect-[4/3] bg-black/5 flex flex-col items-center justify-center p-4 text-center text-black/40 space-y-1">
-          <ImageIcon className="w-6 h-6 text-black/20" />
+        <div className="w-full aspect-[4/3] bg-black/5 flex flex-col items-center justify-center p-4 text-center text-black/60 space-y-1">
+          <ImageIcon className="w-6 h-6 text-black/30" />
           <span className="text-xs font-medium truncate max-w-[90%]">{item.name}</span>
-          <span className="text-[10px] text-black/40 font-mono">Klik untuk melihat</span>
+          <span className="text-[11px] text-black/60">Klik untuk melihat</span>
         </div>
       )}
 
       {/* Video badge */}
       {isVideo && (
-        <div className="absolute top-3 left-3 z-10 flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-mono uppercase tracking-wider shadow-xs">
+        <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2 py-0.5 rounded-[4px] bg-[#0A0B0C]/85 text-white text-[10px] font-medium uppercase tracking-wider shadow-xs">
           <Video className="w-3 h-3 text-[#FFBBFC]" />
           <span>Video</span>
         </div>
@@ -95,7 +103,7 @@ export default function MasonryGallery({ media, story }: MasonryGalleryProps) {
 
   if (!media || media.length === 0) {
     return (
-      <div className="py-24 text-center text-black/40">
+      <div className="py-24 text-center text-black/65">
         <p className="text-sm">Tidak ada foto atau video di folder ini.</p>
       </div>
     );
