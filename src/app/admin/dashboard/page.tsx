@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Album } from "@/db/schema";
@@ -17,6 +17,9 @@ import {
   AlertCircle,
   Lock,
   LogOut,
+  KeyRound,
+  X,
+  ChevronDown,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -37,6 +40,35 @@ export default function AdminDashboardPage() {
   const [pin, setPin] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
+
+  // Change Password state
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentPass, setShowCurrentPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [passSubmitting, setPassSubmitting] = useState(false);
+  const [passError, setPassError] = useState("");
+  const [passSuccess, setPassSuccess] = useState("");
+
+  // Admin Profile Menu state
+  const [showAdminMenu, setShowAdminMenu] = useState(false);
+  const adminMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (adminMenuRef.current && !adminMenuRef.current.contains(e.target as Node)) {
+        setShowAdminMenu(false);
+      }
+    };
+    if (showAdminMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showAdminMenu]);
 
   const fetchAlbums = async () => {
     setLoading(true);
@@ -158,6 +190,49 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPassError("");
+    setPassSuccess("");
+
+    if (newPassword !== confirmPassword) {
+      setPassError("Konfirmasi password baru tidak cocok.");
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setPassError("Password baru minimal terdiri dari 6 karakter.");
+      return;
+    }
+
+    setPassSubmitting(true);
+    try {
+      const res = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setPassSuccess("Password admin berhasil diperbarui!");
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        setTimeout(() => {
+          setShowPasswordModal(false);
+          setPassSuccess("");
+        }, 1500);
+      } else {
+        setPassError(data.error || "Gagal mengubah password.");
+      }
+    } catch (err: any) {
+      setPassError(err?.message || "Terjadi kesalahan saat menghubungi server.");
+    } finally {
+      setPassSubmitting(false);
+    }
+  };
+
   const handleDeleteAlbum = async (slug: string) => {
     if (!confirm("Apakah Anda yakin ingin menghapus album ini?")) return;
     try {
@@ -221,14 +296,68 @@ export default function AdminDashboardPage() {
             Tambah Album Baru
           </button>
 
-          <button
-            onClick={handleLogout}
-            className="inline-flex items-center gap-1.5 px-4 py-3 rounded-full bg-white border border-black/10 hover:bg-black/5 text-black/70 text-xs font-medium transition-all cursor-pointer"
-            title="Keluar dari Admin"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Keluar</span>
-          </button>
+          {/* Admin Account Dropdown Menu */}
+          <div className="relative" ref={adminMenuRef}>
+            <button
+              type="button"
+              onClick={() => setShowAdminMenu(!showAdminMenu)}
+              className="inline-flex items-center gap-2 px-4 py-3 rounded-full bg-white border border-black/10 hover:bg-black/5 text-black/80 text-xs font-medium transition-all cursor-pointer shadow-xs select-none"
+              aria-expanded={showAdminMenu}
+            >
+              <div className="w-5 h-5 rounded-full bg-[#00543D] text-white flex items-center justify-center font-bold text-[10px]">
+                A
+              </div>
+              <span className="font-medium">Admin</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 text-black/40 transition-transform duration-200 ${
+                  showAdminMenu ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {/* Dropdown Floating Panel */}
+            {showAdminMenu && (
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-[12px] border border-black/10 shadow-xl py-2 z-50 animate-fade-in text-xs">
+                <div className="px-4 py-2.5 border-b border-black/5">
+                  <p className="font-semibold text-[#0A0B0C]">Administrator</p>
+                  <p className="text-[11px] text-black/40 truncate font-mono">admin@drivealbum.local</p>
+                </div>
+
+                <div className="py-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowAdminMenu(false);
+                      setPassError("");
+                      setPassSuccess("");
+                      setCurrentPassword("");
+                      setNewPassword("");
+                      setConfirmPassword("");
+                      setShowPasswordModal(true);
+                    }}
+                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-black/70 hover:text-black hover:bg-black/5 transition-colors cursor-pointer"
+                  >
+                    <KeyRound className="w-4 h-4 text-[#00543D]" />
+                    <span>Ubah Password</span>
+                  </button>
+                </div>
+
+                <div className="border-t border-black/5 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowAdminMenu(false);
+                      handleLogout();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-red-600 hover:bg-red-50 transition-colors cursor-pointer font-medium"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Keluar (Logout)</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -501,6 +630,118 @@ export default function AdminDashboardPage() {
                     : editingAlbum
                     ? "Simpan Perubahan"
                     : "Simpan Album"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showPasswordModal && (
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-[12px] border border-black/10 w-full max-w-md p-6 sm:p-8 space-y-6 shadow-xl relative">
+            <div className="flex items-center justify-between border-b border-black/5 pb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-[#00543D]/10 flex items-center justify-center text-[#00543D]">
+                  <KeyRound className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#0A0B0C]">Ubah Password Admin</h3>
+                  <p className="text-[11px] text-black/50">Gunakan password yang kuat dan mudah diingat</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowPasswordModal(false)}
+                className="p-1.5 rounded-full hover:bg-black/5 text-black/40 hover:text-black transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {passError && (
+              <div className="p-3 bg-red-50 text-red-700 text-xs rounded-md border border-red-200">
+                {passError}
+              </div>
+            )}
+
+            {passSuccess && (
+              <div className="p-3 bg-green-50 text-[#00543D] text-xs rounded-md border border-green-200 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#00543D] shrink-0" />
+                <span>{passSuccess}</span>
+              </div>
+            )}
+
+            <form onSubmit={handlePasswordSubmit} className="space-y-4 text-xs">
+              <div>
+                <label className="block font-medium text-black/70 mb-1">Password Saat Ini</label>
+                <div className="relative">
+                  <input
+                    type={showCurrentPass ? "text" : "password"}
+                    placeholder="Masukkan password admin saat ini"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    required
+                    className="w-full px-3.5 py-2.5 pr-10 rounded-[4px] border border-black/15 focus:outline-hidden focus:border-[#00543D]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPass(!showCurrentPass)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-black/40 hover:text-black"
+                  >
+                    {showCurrentPass ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-medium text-black/70 mb-1">Password Baru (Min. 6 Karakter)</label>
+                <div className="relative">
+                  <input
+                    type={showNewPass ? "text" : "password"}
+                    placeholder="Masukkan password baru"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    className="w-full px-3.5 py-2.5 pr-10 rounded-[4px] border border-black/15 focus:outline-hidden focus:border-[#00543D]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPass(!showNewPass)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-black/40 hover:text-black"
+                  >
+                    {showNewPass ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-medium text-black/70 mb-1">Konfirmasi Password Baru</label>
+                <input
+                  type={showNewPass ? "text" : "password"}
+                  placeholder="Ketik ulang password baru"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="w-full px-3.5 py-2.5 rounded-[4px] border border-black/15 focus:outline-hidden focus:border-[#00543D]"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-black/5">
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordModal(false)}
+                  className="px-4 py-2 rounded-full hover:bg-black/5 text-black/70 transition-colors cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={passSubmitting}
+                  className="px-6 py-2 rounded-full bg-[#00543D] text-white font-medium hover:bg-[#003e2c] transition-all disabled:opacity-50 cursor-pointer"
+                >
+                  {passSubmitting ? "Memproses..." : "Simpan Password Baru"}
                 </button>
               </div>
             </form>

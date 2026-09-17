@@ -158,4 +158,29 @@ export async function findUserByEmail(email: string): Promise<schema.User | null
   return localDb.getUserByEmail(email);
 }
 
+export async function updateUserPassword(email: string, newPasswordHash: string): Promise<boolean> {
+  const normalizedEmail = email.trim().toLowerCase();
+  let updated = false;
+
+  if (isDbConfigured && dbInstance) {
+    try {
+      await dbInstance
+        .update(schema.users)
+        .set({ password: newPasswordHash })
+        .where(eq(schema.users.email, normalizedEmail));
+      updated = true;
+    } catch (e) {
+      console.warn("Error updating user password in Postgres:", e);
+    }
+  }
+
+  const user = await localDb.getUserByEmail(normalizedEmail);
+  if (user) {
+    await localDb.updateUser(user.id, { password: newPasswordHash });
+    updated = true;
+  }
+
+  return updated;
+}
+
 export const db = dbInstance;
