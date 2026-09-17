@@ -1,5 +1,5 @@
-import { drizzle as drizzleNeon } from "drizzle-orm/neon-serverless";
-import { Pool } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
 import { eq } from "drizzle-orm";
 import * as schema from "./schema";
 import { hashPasswordSync } from "@/lib/crypto";
@@ -15,8 +15,8 @@ let dbInstance: any = null;
 
 if (isDbConfigured) {
   try {
-    const pool = new Pool({ connectionString });
-    dbInstance = drizzleNeon(pool, { schema });
+    const sql = neon(connectionString!);
+    dbInstance = drizzle(sql, { schema });
   } catch (err) {
     console.warn("Failed to connect to Neon PostgreSQL, falling back to local file store:", err);
   }
@@ -158,26 +158,63 @@ export async function findUserByEmail(email: string): Promise<schema.User | null
   return localDb.getUserByEmail(email);
 }
 
-export async function updateUserPassword(email: string, newPasswordHash: string): Promise<boolean> {
-  const normalizedEmail = email.trim().toLowerCase();
+export async function getFirstAdminUser(): Promise<schema.User | null> {
+  if (isDbConfigured && dbInstance) {
+    try {
+      const res = await dbInstance
+        .select()
+        .from(schema.users)
+        .where(eq(schema.users.role, "admin"))
+        .limit(1);
+      if (res && res[0]) return res[0];
+
+      const fallback = await dbInstance.select().from(schema.users).limit(1);
+      if (fallback && fallback[0]) return fallback[0];
+    } catch (e) {
+      console.warn("Error querying admin user from Postgres, falling back to localDb:", e);
+    }
+  }
+  const store = getLocalStore();
+  return store.users.find((u) => u.role === "admin") || store.users[0] || null;
+}
+
+export async function updateUserPassword(emailOrId: string, newPasswordHash: string): Promise<boolean> {
+  const normalized = emailOrId.trim().toLowerCase();
   let updated = false;
 
   if (isDbConfigured && dbInstance) {
     try {
-      await dbInstance
+      const res = await dbInstance
         .update(schema.users)
         .set({ password: newPasswordHash })
-        .where(eq(schema.users.email, normalizedEmail));
-      updated = true;
+        .where(eq(schema.users.email, normalized))
+        .returning();
+      if (res && res.length > 0) {
+        updated = true;
+      } else {
+        const resId = await dbInstance
+          .update(schema.users)
+          .set({ password: newPasswordHash })
+          .where(eq(schema.users.id, emailOrId))
+          .returning();
+        if (resId && resId.length > 0) updated = true;
+      }
     } catch (e) {
       console.warn("Error updating user password in Postgres:", e);
     }
   }
 
-  const user = await localDb.getUserByEmail(normalizedEmail);
+  const user = await localDb.getUserByEmail(normalized);
   if (user) {
     await localDb.updateUser(user.id, { password: newPasswordHash });
     updated = true;
+  } else {
+    const store = getLocalStore();
+    const u = store.users.find((u) => u.id === emailOrId || u.role === "admin");
+    if (u) {
+      await localDb.updateUser(u.id, { password: newPasswordHash });
+      updated = true;
+    }
   }
 
   return updated;

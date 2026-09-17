@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { findUserByEmail } from "@/db";
+import { findUserByEmail, getFirstAdminUser } from "@/db";
 
 export async function GET() {
   try {
@@ -14,8 +14,14 @@ export async function GET() {
       }, { status: 401 });
     }
 
-    const defaultAdminEmail = (process.env.ADMIN_EMAIL || "admin@drivealbum.local").trim().toLowerCase();
-    const user = await findUserByEmail(defaultAdminEmail);
+    const cookieEmail = cookieStore.get("drivealbum_admin_email")?.value;
+    let user = null;
+    if (cookieEmail) {
+      user = await findUserByEmail(cookieEmail);
+    }
+    if (!user) {
+      user = await getFirstAdminUser();
+    }
 
     return NextResponse.json({
       success: true,
@@ -23,7 +29,7 @@ export async function GET() {
       user: {
         id: user?.id || "admin-default",
         name: user?.name || "Administrator",
-        email: user?.email || defaultAdminEmail,
+        email: user?.email || "admin@drivealbum.local",
         role: user?.role || "admin",
       },
     });

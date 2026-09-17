@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { findUserByEmail, updateUserPassword } from "@/db";
+import { findUserByEmail, getFirstAdminUser, updateUserPassword } from "@/db";
 import { verifyPassword, hashPassword } from "@/lib/crypto";
 
 export async function POST(req: Request) {
@@ -41,13 +41,21 @@ export async function POST(req: Request) {
       );
     }
 
-    // 3. Find current user
-    const defaultAdminEmail = (process.env.ADMIN_EMAIL || "admin@drivealbum.local").trim().toLowerCase();
-    const user = await findUserByEmail(defaultAdminEmail);
+    // 3. Find current user from database
+    const cookieEmail = cookieStore.get("drivealbum_admin_email")?.value;
+
+    let user = null;
+    if (cookieEmail) {
+      user = await findUserByEmail(cookieEmail);
+    }
+    // Fallback: Ambil akun admin yang terdaftar di database
+    if (!user) {
+      user = await getFirstAdminUser();
+    }
 
     if (!user) {
       return NextResponse.json(
-        { success: false, error: "User admin tidak ditemukan di database." },
+        { success: false, error: "Akun admin tidak ditemukan di database. Pastikan database telah di-seed." },
         { status: 404 }
       );
     }
