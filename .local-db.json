@@ -1,0 +1,40 @@
+{
+  "albums": [
+    {
+      "id": "album_1789619049722_vm2pr",
+      "title": "Wedding",
+      "slug": "wedding-dkpz",
+      "description": "Wedding Aris & Fahrisal",
+      "driveFolderId": "1AeCagEZ3b5ku4WiiebyqAgFkDvZ26zfe",
+      "coverFileId": "1uLJeOVPD-0AOBxd_74WfWMWo5xzBX5w7",
+      "coverUrl": "/api/drive/media/1uLJeOVPD-0AOBxd_74WfWMWo5xzBX5w7?thumb=true",
+      "visibility": "public",
+      "story": "",
+      "createdAt": "2026-09-17T04:24:09.722Z",
+      "updatedAt": "2026-09-17T04:24:09.722Z"
+    },
+    {
+      "id": "album_1789613056420_8m8q5",
+      "title": "USG",
+      "slug": "usg-f4aw",
+      "description": "USG Adek ",
+      "driveFolderId": "1u8U-nRsdGSsEArqwfwj5JC1CfQ-d7546",
+      "coverFileId": "1zQq2n0rnG4CPaUeUCGDOYsG1KGkFyMMh",
+      "coverUrl": "/api/drive/image/1zQq2n0rnG4CPaUeUCGDOYsG1KGkFyMMh",
+      "visibility": "public",
+      "story": "Detak jantung pertama yang terdengar di ruang periksa, membawa sejuta rasa syukur dan kebahagiaan yang tak terhingga.",
+      "createdAt": "2026-09-17T02:44:16.420Z",
+      "updatedAt": "2026-09-17T02:44:16.420Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "user-admin-1",
+      "name": "Administrator",
+      "email": "admin@drivealbum.local",
+      "password": "10f548ce53055f3e5b53838a7f5a431f:9a507421e9e258279021a0b4a36f11d912d870693444b22c507ca5f0eeca68b1b110ae66ebef59dcaf81b9e0acb3929ca7c297966c4082bb561e778081e38a01",
+      "role": "admin",
+      "createdAt": "2026-09-17T06:05:59.392Z"
+    }
+  ]
+}

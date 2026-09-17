@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
+@theme {
+  --color-inkstone: #0A0B0C;
+  --color-bone: #F9F9F9;
+  --color-paper: #FFFFFF;
+  --color-forest: #00543D;
+  --color-forest-hover: #003e2c;
+  --color-periwinkle: #ABCBF9;
+  --color-candy-pink: #FFBBFC;
+  --color-butter: #FCE88B;
+  --color-hairline: #E5E7EB;
+  --color-hairline-dark: #1F2937;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #F9F9F9;
+  --foreground: #0A0B0C;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom hairline borders */
+.border-hairline {
+  border-color: rgba(10, 11, 12, 0.08);
+}
+
+/* Ada editorial typography helper */
+.font-editorial {
+  letter-spacing: -0.03em;
+}
+
+/* Subtle image load animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
